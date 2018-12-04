@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="60e90696b3994577976b912ff67d1663" Name="Diagram1" >
+        <EntityTypeShape EntityType="GutschriftModel.VertriebsPartner" Width="1.5" PointX="3" PointY="0.625" />
+        <EntityTypeShape EntityType="GutschriftModel.SimKart" Width="1.5" PointX="1.125" PointY="0.625" />
+        <EntityTypeShape EntityType="GutschriftModel.Gutschrift" Width="1.5" PointX="5.5" PointY="3.25" />
+        <EntityTypeShape EntityType="GutschriftModel.Aufladung" Width="1.5" PointX="3.375" PointY="3.25" />
+        <AssociationConnector Association="GutschriftModel.VertriebsPartnerSimKart" />
+        <AssociationConnector Association="GutschriftModel.SimKartAufladungen" />
+        <AssociationConnector Association="GutschriftModel.GutschriftAufladungen" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

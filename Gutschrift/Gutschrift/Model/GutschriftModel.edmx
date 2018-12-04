@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl" Namespace="GutschriftModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005">
+        <EntityContainer Name="GutschriftModelTargetContainer" >
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="GutschriftModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="GutschriftModelContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="VertriebsPartnerSet" EntityType="GutschriftModel.VertriebsPartner" />
+          <EntitySet Name="SimKartSet" EntityType="GutschriftModel.SimKart" />
+          <EntitySet Name="GutschriftSet" EntityType="GutschriftModel.Gutschrift" />
+          <EntitySet Name="AufladungSet" EntityType="GutschriftModel.Aufladung" />
+          <AssociationSet Name="VertriebsPartnerSimKarten" Association="GutschriftModel.VertriebsPartnerSimKart">
+            <End Role="VertriebsPartner" EntitySet="VertriebsPartnerSet" />
+            <End Role="SimKart" EntitySet="SimKartSet" />
+          </AssociationSet>
+          <AssociationSet Name="SimKartAufladungen" Association="GutschriftModel.SimKartAufladungen">
+            <End Role="SimKart" EntitySet="SimKartSet" />
+            <End Role="Aufladung" EntitySet="AufladungSet" />
+          </AssociationSet>
+          <AssociationSet Name="GutschriftAufladungen" Association="GutschriftModel.GutschriftAufladungen">
+            <End Role="Gutschrift" EntitySet="GutschriftSet" />
+            <End Role="Aufladung" EntitySet="AufladungSet" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="VertriebsPartner">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SimKartSimKartNr" Type="String" Nullable="false" />
+          <NavigationProperty Name="SimKarten" Relationship="GutschriftModel.VertriebsPartnerSimKart" FromRole="VertriebsPartner" ToRole="SimKart" />
+        </EntityType>
+        <EntityType Name="SimKart">
+          <Key>
+            <PropertyRef Name="SimKartNr" />
+          </Key>
+          <Property Name="SimKartNr" Type="String" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Name="TelNr" Type="String" Nullable="false" />
+          <Property Name="KundenName" Type="String" Nullable="true" />
+          <Property Name="RegDatum" Type="DateTime" Nullable="true" />
+          <Property Name="Netz" Type="String" Nullable="true" />
+          <Property Name="BrandName" Type="String" Nullable="true" />
+          <Property Name="AufladungId" Type="Int32" Nullable="false" />
+          <Property Name="VertriebsPartnerId" Type="String" Nullable="false" />
+          <NavigationProperty Name="VertriebsPartner" Relationship="GutschriftModel.VertriebsPartnerSimKart" FromRole="SimKart" ToRole="VertriebsPartner" />
+          <Property Name="VertriebsPartnerId1" Type="String" Nullable="false" />
+          <NavigationProperty Name="Aufladungen" Relationship="GutschriftModel.SimKartAufladungen" FromRole="SimKart" ToRole="Aufladung" />
+        </EntityType>
+        <EntityType Name="Gutschrift">
+          <Key>
+            <PropertyRef Name="Nummer" />
+          </Key>
+          <Property Name="Nummer" Type="String" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Name="FakturaDatum" Type="DateTime" Nullable="true" />
+          <Property Name="AufladungId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Aufladungen" Relationship="GutschriftModel.GutschriftAufladungen" FromRole="Gutschrift" ToRole="Aufladung" />
+        </EntityType>
+        <EntityType Name="Aufladung">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Datum" Type="DateTime" Nullable="false" />
+          <Property Name="Betrag" Type="Int32" Nullable="false" />
+          <Property Name="ProvisionProzent" Type="Double" Nullable="false" />
+          <Property Name="ProvisionBetrag" Type="Int32" Nullable="false" />
+          <Property Name="Pos" Type="Int32" Nullable="true" />
+          <Property Name="NummerAufladung" Type="Int32" Nullable="true" />
+          <NavigationProperty Name="SimKart" Relationship="GutschriftModel.SimKartAufladungen" FromRole="Aufladung" ToRole="SimKart" />
+          <Property Name="SimKartSimKartNr" Type="String" Nullable="false" />
+          <NavigationProperty Name="Gutschrift" Relationship="GutschriftModel.GutschriftAufladungen" FromRole="Aufladung" ToRole="Gutschrift" />
+          <Property Name="GutschriftNummer" Type="String" Nullable="false" />
+        </EntityType>
+        <Association Name="VertriebsPartnerSimKart">
+          <End Type="GutschriftModel.VertriebsPartner" Role="VertriebsPartner" Multiplicity="1" />
+          <End Type="GutschriftModel.SimKart" Role="SimKart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VertriebsPartner">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SimKart">
+              <PropertyRef Name="VertriebsPartnerId1" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SimKartAufladungen">
+          <End Type="GutschriftModel.SimKart" Role="SimKart" Multiplicity="1" />
+          <End Type="GutschriftModel.Aufladung" Role="Aufladung" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SimKart">
+              <PropertyRef Name="SimKartNr" />
+            </Principal>
+            <Dependent Role="Aufladung">
+              <PropertyRef Name="SimKartSimKartNr" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="GutschriftAufladungen">
+          <End Type="GutschriftModel.Gutschrift" Role="Gutschrift" Multiplicity="1" />
+          <End Type="GutschriftModel.Aufladung" Role="Aufladung" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Gutschrift">
+              <PropertyRef Name="Nummer" />
+            </Principal>
+            <Dependent Role="Aufladung">
+              <PropertyRef Name="GutschriftNummer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs" Space="C-S">
+        <Alias Key="Model" Value="GutschriftModel" />
+        <Alias Key="Target" Value="GutschriftModel.Store" />
+        <EntityContainerMapping CdmEntityContainer="GutschriftModelContainer" StorageEntityContainer="GutschriftModelTargetContainer">
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
